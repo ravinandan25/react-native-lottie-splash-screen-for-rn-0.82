@@ -3,14 +3,12 @@ package org.devio.rn.splashscreen
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
+import android.app.Activity
 
 /**
  * SplashScreen
  * 启动屏
- * from：http://www.devio.org
- * Author:CrazyCodeBoy
- * GitHub:https://github.com/crazycodeboy
- * Email:crazycodeboy@gmail.com
+ * Compatible with React Native 0.82
  */
 class SplashScreenModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
@@ -19,10 +17,11 @@ class SplashScreenModule(reactContext: ReactApplicationContext) : ReactContextBa
     }
 
     /**
-     * 关闭启动屏
+     * Hide the splash screen
      */
     @ReactMethod
     fun hide() {
-        SplashScreen.hide(reactApplicationContext.currentActivity)
+        val activity: Activity = reactApplicationContext.currentActivity ?: return
+        SplashScreen.hide(activity)
     }
 }

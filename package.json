@@ -1,61 +1,43 @@
 {
-  "name": "@attarchi/react-native-lottie-splash-screen",
+  "name": "@ravinandan25/react-native-lottie-splash-screen",
   "version": "3.0.1",
-  "description": "A lottie splash screen for react-native with Swift implementation, hide when application loaded ,it works on iOS and Android.",
-  "type": "module",
+  "description": "Fixed version of react-native-lottie-splash-screen — resolves gray overlay and status bar issues on Android. Works on React Native 0.82+ with Swift implementation.",
   "main": "index.js",
   "types": "index.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "bare:install": "yarn pack && yarn workspace example7x install && (cd examples/RN.0.7x-cli/ios && bundle install && bundle exec pod install)",
-    "bare:ios": "yarn workspace example7x ios",
-    "bare:android": "yarn workspace example7x android",
-    "expo:install": "yarn pack && yarn workspace expo7x install",
-    "expo:ios": "yarn workspace expo7x ios",
-    "expo:android": "yarn workspace expo7x android",
-    "bare8x:install": "yarn pack && yarn workspace bare8x install && (cd examples/RN.0.8x/ios && bundle install && bundle exec pod install)",
-    "bare8x:ios": "yarn workspace bare8x ios",
-    "bare8x:android": "yarn workspace bare8x android"
-  },
+  "author": "Ravinandan <ravinandan.bhardwaj@gmail.com>",
+  "contributors": [
+    "TaehyunHwang <taehyun_hwang@tmax.co.kr>",
+    "JoongseopWon <joongseop_won@tmax.co.kr>",
+    "Attarchi <attarchi@me.com>",
+    "Ravinandan <ravinandan.bhardwaj@gmail.com>"
+  ],
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/attarchi/react-native-lottie-splash-screen.git"
+    "url": "https://github.com/ravinandan25/react-native-lottie-splash-screen-for-rn-0.82.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ravinandan25/react-native-lottie-splash-screen-for-rn-0.82/issues"
+  },
+  "homepage": "https://github.com/ravinandan25/react-native-lottie-splash-screen-for-rn-0.82#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "react-native",
-    "react-native-component",
     "react-native-splash-screen",
     "react-native-lottie-splash-screen",
     "lottie",
     "animation",
     "splash-screen",
-    "splashscreen",
-    "splash",
-    "launch-screen",
-    "launchscreen",
     "android",
-    "ios",
-    "swift"
+    "ios"
   ],
-  "contributors": [
-    "TaehyunHwang <taehyun_hwang@tmax.co.kr>",
-    "JoongseopWon <joongseop_won@tmax.co.kr>",
-    "Attarchi <attarchi@me.com>"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/attarchi/react-native-lottie-splash-screen/issues"
-  },
   "peerDependencies": {
-    "react-native": ">=0.70.0"
+    "react-native": ">=0.82.0"
   },
-  "homepage": "https://github.com/attarchi/react-native-lottie-splash-screen#readme",
   "dependencies": {
     "lottie-ios": "4.5.0",
-    "lottie-react-native": "7.3.2"
-  },
-  "workspaces": [
-    "./examples/*"
-  ],
-  "packageManager": "yarn@3.6.4"
+    "lottie-react-native": "7.3.4"
+  }
 }
