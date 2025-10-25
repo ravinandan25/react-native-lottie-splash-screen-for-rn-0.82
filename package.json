@@ -1,6 +1,6 @@
 {
   "name": "@ravinandan25/react-native-lottie-splash-screen",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Fixed version of react-native-lottie-splash-screen — resolves gray overlay and status bar issues on Android. Works on React Native 0.82+ with Swift implementation.",
   "main": "index.js",
   "types": "index.d.ts",
