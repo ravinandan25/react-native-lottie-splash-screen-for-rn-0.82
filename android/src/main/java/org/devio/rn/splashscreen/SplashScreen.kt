@@ -1,12 +1,9 @@
 /**
- * SplashScreen
- * from：http://attarchi.github.io
+ * SplashScreen from：http://attarchi.github.io
  * Author: Attarchi
  * GitHub: https://github.com/attarchi
- * Email: attarchi@me.com
  * Swift version by: React Native Community
  */
-
 package org.devio.rn.splashscreen
 
 import android.animation.Animator
@@ -22,72 +19,86 @@ object SplashScreen {
     private var isAnimationFinished = false
     private var waiting = false
     private var forceToCloseByHideMethod = false
-    private var animationStartTime: Long = 0
+    private var animationStartTime: Long = 0L
 
-
-    fun show(activity: Activity?, themeResId: Int = R.style.SplashScreen_SplashTheme, lottieId: Int, forceToCloseByHideMethod: Boolean = false) {
+    @JvmStatic
+    fun show(
+        activity: Activity?,
+        themeResId: Int = R.style.SplashScreen_SplashTheme,
+        lottieId: Int,
+        forceToCloseByHideMethod: Boolean = false
+    ) {
         if (activity == null) {
             println("SplashScreen: ERROR - Activity is null")
             return
         }
+
         mActivity = WeakReference(activity)
         this.forceToCloseByHideMethod = forceToCloseByHideMethod
         this.isAnimationFinished = false
-        
+
         activity.runOnUiThread {
-            if (!activity.isFinishing) {
-                mSplashDialog = Dialog(activity, themeResId)
-                mSplashDialog?.setContentView(R.layout.launch_screen)
-                mSplashDialog?.setCancelable(false)
-                val lottie = mSplashDialog?.findViewById<LottieAnimationView>(lottieId)
+            if (activity.isFinishing) return@runOnUiThread
 
-                // Configure Lottie animation to play once and not loop
-                // These settings will override any XML configuration
-                lottie?.repeatCount = 0
-                lottie?.speed = 1.0f
-                
-                // Ensure animation is stopped before starting programmatically
-                lottie?.cancelAnimation()
-                lottie?.progress = 0f
+            // Create dialog with splash theme
+            mSplashDialog = Dialog(activity, themeResId).apply {
+                setContentView(R.layout.launch_screen)
+                setCancelable(false)
+            }
 
+            val lottie = mSplashDialog?.findViewById<LottieAnimationView>(lottieId)
 
-                lottie?.addAnimatorListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator) {
-                        println("SplashScreen: Animation started")
-                    }
+            // Let XML control repeatCount, speed, etc.
+            // (So don't override repeatCount or speed here)
 
-                    override fun onAnimationEnd(animation: Animator) {
-                        val animationDuration = (System.currentTimeMillis() - animationStartTime) / 1000.0
+            // Reset animation progress
+            lottie?.cancelAnimation()
+            lottie?.progress = 0f
+
+            // Track start time
+            animationStartTime = 0L
+
+            lottie?.addAnimatorListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+                    animationStartTime = System.currentTimeMillis()
+                    println("SplashScreen: Animation started")
+                }
+
+                override fun onAnimationEnd(animation: Animator) {
+                    println("SplashScreen: Animation ended")
+
+                    if (!forceToCloseByHideMethod) {
+                        val animationDuration =
+                            (System.currentTimeMillis() - animationStartTime) / 1000.0
                         setAnimationFinished(true)
 
+                        // Only hide automatically if not forced by JS
                         if (animationDuration > 0.5) {
                             hideSplashScreen()
                         } else {
-                            // Wait for minimum duration
                             lottie?.postDelayed({
                                 hideSplashScreen()
                             }, ((2.0 - animationDuration) * 1000).toLong())
                         }
                     }
-
-                    override fun onAnimationCancel(animation: Animator) {
-                        println("SplashScreen: Animation was cancelled")
-                    }
-
-                    override fun onAnimationRepeat(animation: Animator) {
-                        println("SplashScreen: Animation repeated (this shouldn't happen)")
-                    }
-                })
-                
-                // Start the animation manually after a small delay
-                lottie?.postDelayed({
-                    animationStartTime = System.currentTimeMillis()
-                    lottie?.playAnimation()
-                }, 100)
-
-                if (mSplashDialog?.isShowing == false) {
-                    mSplashDialog?.show()
                 }
+
+                override fun onAnimationCancel(animation: Animator) {
+                    println("SplashScreen: Animation cancelled")
+                }
+
+                override fun onAnimationRepeat(animation: Animator) {
+                    println("SplashScreen: Animation repeated")
+                }
+            })
+
+            // Start animation if not running
+            if (lottie?.isAnimating == false) {
+                lottie.playAnimation()
+            }
+
+            if (mSplashDialog?.isShowing == false) {
+                mSplashDialog?.show()
             }
         }
     }
@@ -97,23 +108,25 @@ object SplashScreen {
         isAnimationFinished = flag
     }
 
+    /**
+     * Hides splash screen when called from JS.
+     * Works only if forceToCloseByHideMethod == true
+     */
+    @JvmStatic
     fun hide(activity: Activity?) {
-        // Only hide if forceToCloseByHideMethod is true
         if (forceToCloseByHideMethod) {
             hideSplashScreen()
+        } else {
+            println("SplashScreen: JS hide ignored (forceToCloseByHideMethod=false)")
         }
     }
-    
+
     private fun hideSplashScreen() {
-        var _activity = mActivity?.get()
-        if (_activity == null) {
-            return
-        }
+        val _activity = mActivity?.get() ?: return
 
         _activity.runOnUiThread {
             if (mSplashDialog != null && mSplashDialog?.isShowing == true) {
                 var isDestroyed = false
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     isDestroyed = _activity.isDestroyed
                 }
@@ -122,11 +135,12 @@ object SplashScreen {
                     mSplashDialog?.dismiss()
                     mSplashDialog = null
                     waiting = true
+                    println("SplashScreen: Splash hidden")
                 }
             }
         }
     }
-    
+
     @JvmStatic
     fun setForceToCloseByHideMethod(flag: Boolean) {
         forceToCloseByHideMethod = flag
