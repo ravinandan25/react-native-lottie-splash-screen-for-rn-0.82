@@ -81,18 +81,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/windowSplashScreenBackground">
-  <com.airbnb.lottie.LottieAnimationView
-      android:id="@+id/lottie"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:lottie_rawRes="@raw/loading"
-      app:lottie_autoPlay="false"
-      app:lottie_loop="false" />
+    android:background="@color/primary"
+>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_rawRes="@raw/loading"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+    />
 </LinearLayout>
+
 ```
 
 2. Add colors in `android/app/src/main/res/values/colors.xml`:
@@ -107,20 +112,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ```
 <resources>
-  <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-    <item name="android:statusBarColor">#ffffff</item>
-    <item name="android:windowDisablePreview">true</item>
-  </style>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+    <style name="SplashScreen_SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">      
 
-  <style name="SplashScreen_SplashAnimation">
-    <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-  </style>
+        <!-- Fullscreen flags -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
-  <style name="SplashScreen_SplashTheme" parent="Theme.AppCompat.NoActionBar">
-    <item name="android:windowAnimationStyle">@style/SplashScreen_SplashAnimation</item>
-    <item name="windowActionBarOverlay">false</item>
-    <item name="android:windowTranslucentStatus">true</item>
-  </style>
+        <!-- System bars -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <!-- No title -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+
+        <!-- For notches/cutouts -->
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
 </resources>
 ```
 
