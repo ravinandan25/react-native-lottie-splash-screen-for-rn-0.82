@@ -99,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 </LinearLayout>
 
 ```
-2. Place your Lottie JSON at android/app/src/main/res/raw/loading.json.
+2. Place your Lottie JSON at `android/app/src/main/res/raw/loading.json`.
 
 3. Add colors in `android/app/src/main/res/values/colors.xml`:
 
